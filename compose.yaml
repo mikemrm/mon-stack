@@ -12,11 +12,17 @@ services:
   node_exporter:
     image: quay.io/prometheus/node-exporter:latest
     command:
-      - '--path.rootfs=/host'
+      - --path.rootfs=/host
+      - --collector.processes
+      - --collector.tcpstat
+      - --collector.systemd
     pid: host
     restart: unless-stopped
     volumes:
       - '/:/host:ro,rslave'
+      - '/var/run/dbus/system_bus_socket:/var/run/dbus/system_bus_socket:ro'
+    security_opt:
+      - apparmor:unconfined
 
   grafana:
     image: grafana/grafana:latest
