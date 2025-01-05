@@ -1,5 +1,14 @@
 ---
 services:
+  grafana:
+    image: grafana/grafana:latest
+    restart: unless-stopped
+    volumes:
+      - ./data/grafana/data:/var/lib/grafana
+      - ./data/grafana/config:/etc/grafana
+    ports:
+      - 127.0.0.1:3000:3000
+
   prometheus:
     image: prom/prometheus:latest
     restart: unless-stopped
@@ -29,12 +38,3 @@ services:
     restart: unless-stopped
     privileged: true
     user: root
-
-  grafana:
-    image: grafana/grafana:latest
-    restart: unless-stopped
-    volumes:
-      - ./data/grafana/data:/var/lib/grafana
-      - ./data/grafana/config:/etc/grafana
-    ports:
-      - 127.0.0.1:3000:3000
